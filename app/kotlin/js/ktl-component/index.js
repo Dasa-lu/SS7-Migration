@@ -8,9 +8,10 @@ export const initComponents = () => {
   getKTLComponentsComments().forEach(({name, node, props}) => {
     switch (name) {
       case 'header':
-        initKTLComponent(node.nextElementSibling, Header, {
-          ...props,
-          onSearchClick: () => {/* no op */},
+          initKTLComponent(node.nextElementSibling, Header, {
+              ...props,
+              onSearchClick: () => {/* no op */},
+
         });
         break;
       case 'footer':

@@ -8,7 +8,7 @@ hljs.registerLanguage('kotlin', kotlin);
 import {ThemeProvider} from '@rescui/ui-contexts';
 
 import HeaderSection  from "./header-section";
-import {LatestFromKotlinSection} from './latest-from-kotlin-section/index.jsx';
+import {LatestFromKotlinSection} from './latest-from-kotlin-section/index';
 import {WhyKotlinSection} from './why-kotlin-section/index.jsx';
 import {UsageSection} from './usage-section/index.jsx';
 import {StartSection} from './start-section/index.jsx';
@@ -16,7 +16,7 @@ import {StartSection} from './start-section/index.jsx';
 import "./index.scss";
 import "../../../css/grid.scss";
 
-export function OverviewPageContent(): React.JSX.Element {
+export function OverviewPageContent() {
     return <div className="overview-page">
         <HeaderSection/>
         <LatestFromKotlinSection/>
@@ -26,7 +26,7 @@ export function OverviewPageContent(): React.JSX.Element {
     </div>
 }
 
-export default function OverviewPage(): React.JSX.Element  {
+export default function OverviewPage() {
     return (
     <ThemeProvider theme="dark">
         <OverviewPageContent/>

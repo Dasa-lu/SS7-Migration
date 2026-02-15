@@ -1,0 +1,103 @@
+.ssrHeader {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: white;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.ssrHeader__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 60px; /* фиксируем высоту */
+}
+
+.ssrHeader__logo {
+    width: 110px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(0,0,0,.08);
+}
+
+.ssrHeader__nav {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+}
+
+.ssrHeader__link {
+    width: 64px;
+    height: 14px;
+    border-radius: 7px;
+    background: rgba(0,0,0,.08);
+    display: inline-block;
+}
+
+.ssrHeader__actions {
+    display: flex;
+    gap: 10px;
+}
+
+.ssrHeader__btn {
+    width: 70px;
+    height: 30px;
+    border-radius: 12px;
+    background: rgba(0,0,0,.08);
+    display: inline-block;
+}
+
+.ssrHeader__btnPrimary {
+    width: 90px;
+    background: rgba(0,0,0,.12);
+}
+
+.ssrFooter {
+    background: white;
+    border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.ssrFooter__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 20px;
+    min-height: 180px; /* фиксируем высоту */
+}
+
+.ssrFooter__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 24px;
+}
+
+.ssrFooter__title {
+    width: 90px;
+    height: 14px;
+    border-radius: 7px;
+    background: rgba(0,0,0,.12);
+    margin-bottom: 12px;
+}
+
+.ssrFooter__item {
+    width: 140px;
+    height: 12px;
+    border-radius: 6px;
+    background: rgba(0,0,0,.08);
+    margin: 10px 0;
+}
+
+.ssrFooter__bottom {
+    margin-top: 22px;
+    display: flex;
+    gap: 14px;
+}
+
+.ssrFooter__small {
+    width: 90px;
+    height: 12px;
+    border-radius: 6px;
+    background: rgba(0,0,0,.08);
+}

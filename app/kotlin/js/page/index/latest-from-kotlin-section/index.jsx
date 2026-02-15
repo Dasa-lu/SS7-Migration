@@ -5,18 +5,14 @@ import cn from 'classnames';
 
 import Container, {Section} from "../../../components/layout";
 
-import bannerImg from '../../../../../assets/images/index/banners/kotlin-1.6.20.png';
-import bannerMobileImg from '../../../../../assets/images/index/banners/kotlin-1.6.20-mobile.png';
+// import bannerImg from '../../../../../assets/images/index/banners/kotlin-1.6.20.png';
+//import bannerMobileImg from '../../../../../assets/images/index/banners/kotlin-1.6.20-mobile.png';
 
+const bannerImg = "/assets/images/index/banners/kotlin-1.6.20.png";
+const bannerMobileImg = "/assets/images/index/banners/kotlin-1.6.20-mobile.png";
 import {newsData} from './data';
 
 import './index.scss';
-
-interface datatypes {
-    title: string;
-    link: string;
-    tags: string;
-}
 
 export function LatestFromKotlinSection() {
     const textCn = useTextStyles();
@@ -75,4 +71,5 @@ export function LatestFromKotlinSection() {
             </Container>
         </Section>
     </div>
+
 }

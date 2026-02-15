@@ -7,12 +7,27 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import "@rescui/typography/lib/font-jb-sans-auto.css";
+import "./kotlin/css/styles-v2.scss";
+import "~/kotlin/css/grid.scss";
 import type { Route } from "./+types/root";
 import "./app.css";
 
+import {ClientOnly} from "~/kotlin/js/ktl-component/ClientOnly";
+import Header from "~/kotlin/js/ktl-component/header";
+import Footer from "~/kotlin/js/ktl-component/footer";
+import {ThemeProvider} from "@rescui/ui-contexts";
+import {FooterPlaceholder, HeaderPlaceholder} from "~/kotlin/js/components/PlaceHolders";
+
+if (typeof globalThis !== "undefined" && !(globalThis as any).global) {
+    (globalThis as any).global = globalThis;
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
+    { rel: "icon", href: "/favicon.svg" },
+
+    {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
@@ -33,8 +48,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
+      <ClientOnly fallback={<HeaderPlaceholder/>}>
+          <Header />
+      </ClientOnly>
+
+      {children}
+      <ClientOnly fallback={<FooterPlaceholder/>}>
+         <ThemeProvider theme="dark">
+          <Footer />
+         </ThemeProvider>
+      </ClientOnly>
+      <ScrollRestoration />
         <Scripts />
       </body>
     </html>
