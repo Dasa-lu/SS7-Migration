@@ -1,87 +1,73 @@
-# Welcome to React Router!
+# React Router 7 SSR Migration
+This project is a migration of a legacy Kotlin homepage to React Router 7 (Framework Mode) with Server-Side Rendering (SSR) while preserving visual appearance and interactive functionality.
 
-A modern, production-ready template for building full-stack React applications using React Router.
+******
+### **Tech Stack**
+- React 18
+- RR7 (Framework Mode)
+- Vite
+- TypeScript
+- @rescui UI components
+- @jetbrains/kotlin-web-site-ui
+******
+### **Installation**
+- npm install
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+### **Development**
+- npm run dev
 
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
+*******
+### **Production**
+**Build the application:**
 npm run build
+
+**Start the production SSR server:**
+npm run start
+
+*****
+```
+Project structure
+├── app/
+    ├── root.tsx   # Root layout
+    ├── routes/
+    ├── kotlin/    
+        └── js/    
+            └── page/index/  #Homepage section
+            └── ktl-component/ #Header and Footer Wrappers
 ```
 
-## Deployment
+****
+### **Header and Footer strategy**
 
-### Docker Deployment
+The Header and Footer components are provided by @jetbrains/kotlin-web-site-ui.
 
-To build and run using Docker:
+These components internally rely on browser-specific APIs such as:
+* window
+* document
+* ResizeObserver
+* layout measurements (getBoundingClientRect)
+* scroll-lock logic on document.body
 
-```bash
-docker build -t my-app .
+Because of this, they are not fully SSR-safe in this environment without modifying internal library implementation.
 
-# Run the container
-docker run -p 3000:3000 my-app
-```
+Instead of disabling SSR globally or patching the third-party library, a client-only boundary was introduced specifically for Header and Footer.
 
-The containerized application can be deployed to any platform that supports Docker, including:
+This approach:
+* Keeps SSR enabled for the main page content
+* Prevents server runtime errors
+* Preserves full interactivity after hydration
+* Maintains architectural separation of browser-dependent logic
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
 
-### DIY Deployment
+Verifying SSR
+### Verifying SSR
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
+1. Run:
+   npm run build && npm run start
+2. Disable JavaScript in the browser and reload the page.
+3. The homepage content should remain visible.
+4. Alternatively, use “View Page Source” and verify that the headline appears in the raw HTML.
 
-Make sure to deploy the output of `npm run build`
+### Summary
 
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+The application builds successfully in production mode, renders server-side HTML, and becomes fully interactive after hydration while maintaining the original design.
