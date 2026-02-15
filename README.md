@@ -1,73 +1,77 @@
-# React Router 7 SSR Migration
-This project is a migration of a legacy Kotlin homepage to React Router 7 (Framework Mode) with Server-Side Rendering (SSR) while preserving visual appearance and interactive functionality.
+# Installation & Dependency Strategy
 
-******
-### **Tech Stack**
-- React 18
-- RR7 (Framework Mode)
-- Vite
-- TypeScript
-- @rescui UI components
-- @jetbrains/kotlin-web-site-ui
-******
-### **Installation**
-- npm install --legacy-peer-deps
+### Development
 
-### **Development**
-- npm run dev
+* npm install --legacy-peer-deps
+* npm run dev
 
-*******
-### **Production**
-**Build the application:**
-npm run build
+**This project combines two constraints:**
+1.	Migration to React Router 7 (Framework Mode with SSR)
+2.	Strict preservation of the original Kotlin homepage visual design and behavior
 
-**Start the production SSR server:**
-npm run start
+React Router 7 assumes a modern React environment (React 18).
+However, the original UI layer inherited from the source project (@jetbrains/kotlin-web-site-ui@3.x) declares peer compatibility: react >= 16.8.6 < 18
 
-*****
+**This results in a peer dependency conflict:**
+•	React Router 7 → requires React 18
+•	Legacy Kotlin UI package → declares compatibility only up to React 17
+•	npm (v7+) strictly enforces peer constraints and fails with ERESOLVE
+
+For this assignment, visual fidelity was prioritized over refactoring or upgrading the UI library.
+
+Upgrading @jetbrains/kotlin-web-site-ui to a React 18–compatible version would potentially introduce visual and behavioral differences not directly related to the routing migration.
+
+An experimental upgrade to a React 18–compatible UI version was evaluated. However, noticeable visual differences were observed in the Header component. Since the assignment explicitly prioritizes visual accuracy and preservation of the original appearance, the decision was made to retain the legacy UI version rather than introduce unintended UI deviations.
+
+Therefore, installation uses: npm install --legacy-peer-deps
+
+This allows the dependency tree to resolve while preserving:
+•	Original design
+•	Original component structure
+•	Expected UI behavior
+
+## Production
+
+* Build the application: npm run build
+* Start the production SSR server: npm run start
+
+## Project structure
 ```
-Project structure
-├── app/
-    ├── root.tsx   # Root layout
-    ├── routes/
-    ├── kotlin/    
-        └── js/    
-            └── page/index/  #Homepage section
-            └── ktl-component/ #Header and Footer Wrappers
+app/
+├── root.tsx                # Root layout
+├── routes/                 # React Router 7 routes
+├── kotlin/
+│   └── js/
+│       └── page/index/     # Homepage content
+│       └── ktl-component/  # Header and Footer wrappers
 ```
+## SSR strategy
+Header and Footer Handling
+@jetbrains/kotlin-web-site-ui components rely on browser-specific APIs:
 
-****
-### **Header and Footer strategy**
+	•	window
+	•	document
+	•	ResizeObserver
+	•	layout measurements (getBoundingClientRect)
+	•	scroll locking via document.body
 
-The Header and Footer components are provided by @jetbrains/kotlin-web-site-ui.
-
-These components internally rely on browser-specific APIs such as:
-* window
-* document
-* ResizeObserver
-* layout measurements (getBoundingClientRect)
-* scroll-lock logic on document.body
-
-Because of this, they are not fully SSR-safe in this environment without modifying internal library implementation.
-
-Instead of disabling SSR globally or patching the third-party library, a client-only boundary was introduced specifically for Header and Footer.
+Because these APIs are unavailable during server rendering, the Header and Footer are wrapped in a client-only boundary.
 
 This approach:
-* Keeps SSR enabled for the main page content
-* Prevents server runtime errors
-* Preserves full interactivity after hydration
-* Maintains architectural separation of browser-dependent logic
+•	Keeps SSR enabled for main content
+•	Prevents server runtime errors
+•	Preserves full interactivity after hydration
+•	Avoids patching third-party library internals
 
+## Verifying SSR
+* Build and start production: npm run build && npm run start 
+* Disable JavaScript in the browser and reload. 
+* The homepage content remains visible. 
+* Alternatively, use “View Page Source” and verify that the main headline appears in the raw HTML.
 
-Verifying SSR
-### Verifying SSR
-
-1. Run:
-   npm run build && npm run start
-2. Disable JavaScript in the browser and reload the page.
-3. The homepage content should remain visible.
-4. Alternatively, use “View Page Source” and verify that the headline appears in the raw HTML.
-
-### Summary
-
-The application builds successfully in production mode, renders server-side HTML, and becomes fully interactive after hydration while maintaining the original design.
+## Engineering Note
+In a production system, the preferred solution would be to align all dependencies to officially supported versions (e.g., upgrading UI components to a React 18–compatible release).
+For this migration task, dependency overrides were chosen intentionally to:
+•	Limit scope strictly to routing and SSR migration
+•	Avoid unintended visual regressions
+•	Preserve original design fidelity
