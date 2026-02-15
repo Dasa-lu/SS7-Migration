@@ -11,7 +11,7 @@ This project is a migration of a legacy Kotlin homepage to React Router 7 (Frame
 - @jetbrains/kotlin-web-site-ui
 ******
 ### **Installation**
-- npm install
+- npm install --legacy-peer-deps
 
 ### **Development**
 - npm run dev
